@@ -1,5 +1,7 @@
 <?php
- include('conexao.php');
+ include './index.php';
+ConexaoPDO1();
+session_start();
 
 $nome=$_POST["nome"];
 $cpf=$_POST["cpf"];
@@ -9,13 +11,20 @@ $periodo=$_POST["periodo"];
 $turno=$_POST["turno"];
 $vacina=$_POST["vacina"];
 
-$sql="INSERT INT ct_vacina (id_nome, nr_cpf, id_email, id_curso, id_periodo, id_turno, id_vacina) VALUES ('$nome', '$cpf', '$email', '$curso', '$periodo' , '$turno',' $vacina')";
 
-if(mysqli_querry($conexao, $sql)){
-    echo "Usuario cadastrado com sucesso";
-} else{
-    echo "ERRO ! " . mysqli_connect_error($conexao);
-}
+$stmt2 = $conexao_pdo->prepare( "SELECT * FROM  ct_vacina WHERE  nome = '{$_POST ['nome']}' AND cpf = '{$_POST ['cpf']}' AND  email = '{$_POST ['email']}' 
+curso = '{$_POST ['curso']}' perido = '{$_POST ['periodo']}' turno = '{$_POST ['turno']}' vacina = '{$_POST ['turno']}'");
 
-mysqli_close($conexao);
+$stmt2->execute();
+if($stmt2->rowCount()>0){
+    $id = $stmt2->fetchAll(PDO::FETCH_COLUMN, 0);
+    $_SESSION["ct_vacina"]=$id[0];
+     header("location:index.php");
+ }else{
+     echo '<script>alert("Credenciais não encontradas")</script>';
+ } 
+
+
+
+
 ?>
