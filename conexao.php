@@ -5,13 +5,19 @@ $bancodedados = 'cartaovacina';
 $usuario = 'root';
 $senha = '';
 
+function ConexaoPDO1(){
+    global $conexao_pdo; 
+    $hostname = '127.0.0.1';
+    $bancodedados = 'cartaovacina';
+    $usuario = 'root';
+    $senha = '';
+    $config = "pgsql: host = $hostname; user = $usuario; password = $senha dbname = $bancodedados ";
 
-$conexao = mysqli_connect($hostname, $usuario, $senha, $bancodedados);
-
-if(!$conexao) {
-  die("Houve um erro".mysqli_connect_error());
+     try{
+             $conexao_pdo = new PDO($config);
+        }catch(PDOException $e){
+                echo $e->getMessage();
+    }
 }
-
-
 
 ?>
